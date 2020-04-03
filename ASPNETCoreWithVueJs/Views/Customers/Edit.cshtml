@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="app">
+    <edit-component edit-url="@Url.Action("Edit", "Customers", new { Id = ViewBag.Id })"
+                     details-data-url="@Url.Action("DetailsData", "Customers", new { Id = ViewBag.Id })"
+                    index-url="@Url.Action("Index")"></edit-component>
+</div>
+
+@section Scripts {
+    <script src="@Url.Content("~/bundle/Customer.js")"></script>
+}

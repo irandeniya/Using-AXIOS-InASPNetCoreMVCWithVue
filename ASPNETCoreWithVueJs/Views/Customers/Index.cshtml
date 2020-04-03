@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var isAdmin = User.IsInRole("Admin");
+}
+
+<div id="app">
+    <index-component create-customer-url="@Url.Action("Create")" delete-url="@Url.Action("Delete")" 
+                     edit-url="@Url.Action("Edit")" details-url="@Url.Action("Details")" 
+                     index-data-url="@Url.Action("IndexData")" :is-admin="@isAdmin.ToString().ToLower()"></index-component>
+</div>
+
+@section Scripts {
+    <script src="@Url.Content("~/bundle/Customer.js")"></script>
+}
