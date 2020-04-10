@@ -1,6 +1,6 @@
 <template>
-    <div id="customer">
-        <h1>Customer Create -Vue</h1>
+    <div id="product">
+        <h1>Product Create -Vue</h1>
         <p v-if="isAdmin">
             <a :href="CreateCustomerUrl">Create New</a>
         </p>
@@ -8,13 +8,10 @@
             <thead>
                 <tr>
                     <th>
-                        Name
+                        First Name
                     </th>
                     <th>
-                        Address
-                    </th>
-                    <th>
-                        Contact No
+                        Last Name
                     </th>
                     <th></th>
                 </tr>
@@ -22,18 +19,15 @@
             <tbody>
                 <tr v-for="item in Customers">
                     <td>
-                        {{item.name}}
+                        {{item.firstName}}
                     </td>
                     <td>
-                        {{item.address}}
+                        {{item.lastName}}
                     </td>
                     <td>
-                        {{item.contactNo}}
-                    </td>
-                    <td>
-                        <a v-if="isAdmin" :href="EditUrl+'/'+item.id">Edit</a>|
-                        <a :href="DetailsUrl+'/'+item.id">Details</a> |
-                        <button type="button" v-if="isAdmin" v-on:click="DeleteCustomer(item.id)">Delete</button>
+                        <a v-if="isAdmin" :href="EditUrl+'/'+item.customerId">Edit</a>|
+                        <a :href="DetailsUrl+'/'+item.customerId">Details</a> |
+                        <a v-if="isAdmin" href="javascript:void(0)" v-on:click="deleteCustomer(item.customerId)">Delete</a>
                     </td>
                 </tr>
             </tbody>
@@ -44,15 +38,15 @@
     import axios from 'axios';
 
     export default {
-        name: "customer-create-component",
+        name: "product-create-component",
         props: {
             CreateCustomerUrl: String,
-            IndexDataUrl: String,
+            DataUrl: String,
             DeleteUrl: String,
             EditUrl: String,
             DetailsUrl: String,
-            DeleteUrl: String,
-            isAdmin: Boolean,
+            IndexUrl: String,
+            isAdmin: Boolean
         },
         data() {
             return {
@@ -60,30 +54,32 @@
             }
         },
         methods: {
-            DeleteCustomer(id) {
+            deleteCustomer(id) {
                 var base = this;
-                var record = base.Customers.filter(function (f) { return f.id === id; })[0];
-
-                var conf = confirm('want to delete ' + record.name + '?');
-
-                if (conf) {
-                    new Promise(function () {
-                        axios.post(base.DeleteUrl + '/' + record.id)
+                console.log(id);
+                var record = base.Customers.filter(function (f) { return f.customerId === id })[0];
+                console.log(record);
+                var rep = confirm('Want to delete ' + record.firstName + ' ' + record.lastName + '?');
+                if (rep) {
+                    new Promise(function (resolve, reject) {
+                        axios.post(base.DeleteUrl + '/' + id)
                             .then(function (res) {
-                                window.location.reload();
+                                window.location.href = base.IndexUrl;
                             })
                             .catch(function (err) {
                                 console.log(err);
                             });
                     });
                 }
-            },
+            }
         },
-        mounted() {
+        beforeMount() {
             var base = this;
-            new Promise(function (request, response) {
-                axios.get(base.IndexDataUrl)
+
+            new Promise(function (resolve, reject) {
+                axios.get(base.DataUrl)
                     .then(function (res) {
+                        console.log(res);
                         base.Customers = res.data;
                     })
                     .catch(function (err) {

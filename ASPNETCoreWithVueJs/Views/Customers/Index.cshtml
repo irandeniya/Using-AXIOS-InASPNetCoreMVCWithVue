@@ -6,8 +6,8 @@
 
 <div id="app">
     <index-component create-customer-url="@Url.Action("Create")" delete-url="@Url.Action("Delete")" 
-                     edit-url="@Url.Action("Edit")" details-url="@Url.Action("Details")" 
-                     index-data-url="@Url.Action("IndexData")" :is-admin="@isAdmin.ToString().ToLower()"></index-component>
+                     edit-url="@Url.Action("Edit")" details-url="@Url.Action("Details")" data-url="@Url.Action("IndexData")"
+                     index-url="@Url.Action("Index")" :is-admin="@isAdmin.ToString().ToLower()"></index-component>
 </div>
 
 @section Scripts {

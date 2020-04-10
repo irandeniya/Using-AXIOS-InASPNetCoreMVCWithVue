@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ASPNETCoreWithVueJs.ResourceModels
 {
-    public class JsonResponseResource
+    public class ActionConfirmResult
     {
         public bool Success { get { return Errors == null || !Errors.Any(); } }
         public List<string> Errors { get; set; }

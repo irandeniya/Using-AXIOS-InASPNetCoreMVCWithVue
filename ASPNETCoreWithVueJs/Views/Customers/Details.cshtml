@@ -5,9 +5,9 @@
 
 
 <div id="app">
-    <display-component edit-url="@Url.Action("Edit", "Customers", new { Id = ViewBag.Id })" index-url="@Url.Action("Index", "Customers")" 
-                       delete-url="@Url.Action("Delete", "Customers", new { Id = ViewBag.Id })"
-                        details-data-url="@Url.Action("DetailsData", "Customers", new { Id = ViewBag.Id })"></display-component>
+    <display-component edit-url="@Url.Action("Edit", "Customers", new { Id = ViewBag.Id })" 
+                    details-data-url="@Url.Action("DetailsData", "Customers", new { Id = ViewBag.Id })"
+                    index-url="@Url.Action("Index", "Customers")"></display-component>
 </div>
 
 @section Scripts {

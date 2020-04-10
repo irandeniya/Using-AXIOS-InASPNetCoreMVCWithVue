@@ -6,19 +6,36 @@
                 <div class="col-md-4">
                     <div class="text-danger"></div>
                     <div class="form-group">
-                        <label for="Name" class="control-label">Customer Name</label>
-                        <input v-model="Name" class="form-control" />
+                        <label for="FirstName" class="control-label">First Name</label>
+                        <input v-model="FirstName" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <label for="Address" class="control-label">Address</label>
-                        <input v-model="Address" class="form-control" />
+                        <label for="LastName" class="control-label">Last Name</label>
+                        <input v-model="LastName" class="form-control" />
                     </div>
+
                     <div class="form-group">
-                        <label for="ContactNo" class="control-label">Contact No</label>
-                        <input v-model="ContactNo" class="form-control" />
+                        <label for="AddressLine1" class="control-label">Address Line 1</label>
+                        <input v-model="AddressLine1" class="form-control" />
                     </div>
+
                     <div class="form-group">
-                        <input type="button" value="Save" v-on:click="save" class="btn btn-primary" />
+                        <label for="AddressLine2" class="control-label">Address Line 2</label>
+                        <input v-model="AddressLine2" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ContactNo1" class="control-label">Contact No 1</label>
+                        <input v-model="ContactNo1" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ContactNo2" class="control-label">Contact No 2</label>
+                        <input v-model="ContactNo2" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <input type="button" value="Create" @click="save" class="btn btn-primary" />
                     </div>
                 </div>
             </div>
@@ -27,6 +44,7 @@
 </template>
 <script>
     import axios from 'axios';
+
     export default {
         name: "customer-create-component",
         props: {
@@ -35,22 +53,27 @@
         },
         data() {
             return {
-                Name: '', 
-                Address: '',
-                ContactNo: ''
+                FirstName: '',
+                LastName: '',
+                AddressLine1: '',
+                AddressLine2: '',
+                ContactNo1: '',
+                ContactNo2: ''
             }
         },
         methods: {
             save() {
                 var base = this;
-
                 var data = {
-                    Name: base.Name,
-                    Address: base.Address,
-                    ContactNo: base.ContactNo
+                    FirstName: base.FirstName,
+                    LastName: base.LastName,
+                    AddressLine1: base.AddressLine1,
+                    AddressLine2: base.AddressLine2,
+                    ContactNo1: base.ContactNo1,
+                    ContactNo2: base.ContactNo2
                 };
-
-                new Promise(function (request, response) {
+                
+                new Promise(function (resolve, reject) {
                     axios.post(base.CreateCustomerUrl, data)
                         .then(function (res) {
                             window.location.href = base.IndexUrl;

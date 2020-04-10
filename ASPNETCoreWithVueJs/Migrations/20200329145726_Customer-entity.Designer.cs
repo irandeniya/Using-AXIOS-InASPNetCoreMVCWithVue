@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPNETCoreWithVueJs.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200402155116_init")]
-    partial class init
+    [Migration("20200329145726_Customer-entity")]
+    partial class Customerentity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,17 +23,23 @@ namespace ASPNETCoreWithVueJs.Migrations
 
             modelBuilder.Entity("ASPNETCoreWithVueJs.Models.Customer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CustomerId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Address");
+                    b.Property<string>("AddressLine1");
 
-                    b.Property<string>("ContactNo");
+                    b.Property<string>("AddressLine2");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("ContactNo1");
 
-                    b.HasKey("Id");
+                    b.Property<string>("ContactNo2");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
+
+                    b.HasKey("CustomerId");
 
                     b.ToTable("Customers");
                 });

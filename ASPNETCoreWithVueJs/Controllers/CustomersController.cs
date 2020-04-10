@@ -27,21 +27,22 @@ namespace ASPNETCoreWithVueJs.Controllers
 
         public async Task<IActionResult> IndexData()
         {
-            return Json(await _context.Customers.ToListAsync());
+            var data = await _context.Customers.ToListAsync();
+            return Json(data);
         }
 
-        // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
             ViewBag.Id = id;
+
             return View();
         }
 
+        // GET: Customers/Details/5
         public async Task<IActionResult> DetailsData(int? id)
         {
             if (id == null)
@@ -50,7 +51,7 @@ namespace ASPNETCoreWithVueJs.Controllers
             }
 
             var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.CustomerId == id);
             if (customer == null)
             {
                 return NotFound();
@@ -70,15 +71,16 @@ namespace ASPNETCoreWithVueJs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([FromBody][Bind("Id,Name,Address,ContactNo")] Customer customer)
+        public async Task<IActionResult> Create([FromBody][Bind("FirstName,LastName,AddressLine1,AddressLine2,ContactNo1,ContactNo2")] Customer customer)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
-                return View(new JsonResponseResource { });
+
+                return Json(new ActionConfirmResult());
             }
-            return View(new JsonResponseResource { Errors = ModelState.SelectMany(s => s.Value.Errors.Select(f => f.ErrorMessage)).ToList() });
+            return Json(new ActionConfirmResult { Errors = ModelState.SelectMany(s => s.Value.Errors.Select(e => e.ErrorMessage)).ToList() });
         }
 
         // GET: Customers/Edit/5
@@ -88,8 +90,8 @@ namespace ASPNETCoreWithVueJs.Controllers
             {
                 return NotFound();
             }
-
             ViewBag.Id = id;
+            
             return View();
         }
 
@@ -98,9 +100,9 @@ namespace ASPNETCoreWithVueJs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [FromBody][Bind("Id,Name,Address,ContactNo")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [FromBody][Bind("CustomerId,FirstName,LastName,AddressLine1,AddressLine2,ContactNo1,ContactNo2")] Customer customer)
         {
-            if (id != customer.Id)
+            if (id != customer.CustomerId)
             {
                 return NotFound();
             }
@@ -114,7 +116,7 @@ namespace ASPNETCoreWithVueJs.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerExists(customer.Id))
+                    if (!CustomerExists(customer.CustomerId))
                     {
                         return NotFound();
                     }
@@ -123,28 +125,28 @@ namespace ASPNETCoreWithVueJs.Controllers
                         throw;
                     }
                 }
-                return View(new JsonResponseResource { });
+                return Json(new ActionConfirmResult());
             }
-            return View(new JsonResponseResource { Errors = ModelState.SelectMany(s => s.Value.Errors.Select(f => f.ErrorMessage)).ToList() });
+            return Json(new ActionConfirmResult { Errors = ModelState.SelectMany(s => s.Value.Errors.Select(e => e.ErrorMessage)).ToList() });
         }
 
         // GET: Customers/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
+        //    var customer = await _context.Customers
+        //        .FirstOrDefaultAsync(m => m.CustomerId == id);
+        //    if (customer == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(customer);
-        }
+        //    return View(customer);
+        //}
 
         // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -154,12 +156,13 @@ namespace ASPNETCoreWithVueJs.Controllers
             var customer = await _context.Customers.FindAsync(id);
             _context.Customers.Remove(customer);
             await _context.SaveChangesAsync();
-            return Json(new JsonResponseResource());
+
+            return Json(new ActionConfirmResult());
         }
 
         private bool CustomerExists(int id)
         {
-            return _context.Customers.Any(e => e.Id == id);
+            return _context.Customers.Any(e => e.CustomerId == id);
         }
     }
 }
